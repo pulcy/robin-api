@@ -32,6 +32,7 @@ type FrontendSelectorRecord struct {
 	Private      bool          `json:"private,omitempty"`
 	Users        []UserRecord  `json:"users,omitempty"`
 	RewriteRules []RewriteRule `json:"rewrite-rules,omitempty"`
+	Backup       bool          `json:"backup,omitempty"`
 }
 
 type UserRecord struct {
