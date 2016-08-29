@@ -21,6 +21,7 @@ type FrontendRecord struct {
 	HttpCheckPath   string                   `json:"http-check-path,omitempty"`
 	HttpCheckMethod string                   `json:"http-check-method,omitempty"`
 	Sticky          bool                     `json:"sticky,omitempty"`
+	Backup          bool                     `json:"backup,omitempty"`
 }
 
 type FrontendSelectorRecord struct {
@@ -32,7 +33,6 @@ type FrontendSelectorRecord struct {
 	Private      bool          `json:"private,omitempty"`
 	Users        []UserRecord  `json:"users,omitempty"`
 	RewriteRules []RewriteRule `json:"rewrite-rules,omitempty"`
-	Backup       bool          `json:"backup,omitempty"`
 }
 
 type UserRecord struct {
