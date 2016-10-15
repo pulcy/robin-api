@@ -41,6 +41,9 @@ func (r FrontendRecord) Validate() error {
 	default:
 		return maskAny(errgo.WithCausef(nil, ValidationError, "mode must be http|tcp"))
 	}
+	if len(r.Selectors) == 0 {
+		return maskAny(errgo.WithCausef(nil, ValidationError, "at least 1 selector must be set"))
+	}
 	for _, sr := range r.Selectors {
 		if err := sr.Validate(); err != nil {
 			return maskAny(err)
