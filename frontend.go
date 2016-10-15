@@ -75,6 +75,9 @@ func (r FrontendSelectorRecord) Validate() error {
 	if r.FrontendPort < 0 || r.FrontendPort > maxPort {
 		return maskAny(errgo.WithCausef(nil, ValidationError, "frontend-port must be between 0-%d", maxPort))
 	}
+	if r.Domain == "" && r.PathPrefix == "" && r.FrontendPort == 0 {
+		return maskAny(errgo.WithCausef(nil, ValidationError, "domain, path-prefix or frontend-port must be set"))
+	}
 	for _, ur := range r.Users {
 		if err := ur.Validate(); err != nil {
 			return maskAny(err)
