@@ -14,27 +14,35 @@
 
 package api
 
-import "github.com/juju/errgo"
+import (
+	"github.com/juju/errgo"
+	"github.com/pulcy/rest-kit"
+)
+
+const (
+	codeDuplicateID = 1
+	codeValidation  = 2
+)
 
 var (
-	IDNotFoundError  = errgo.New("not found")
-	DuplicateIDError = errgo.New("duplicate ID")
-	ValidationError  = errgo.New("validation")
+	IDNotFoundError  = restkit.NotFoundError("not found", 0)
+	DuplicateIDError = restkit.BadRequestError("duplicate ID", codeDuplicateID)
+	ValidationError  = restkit.BadRequestError("validation", codeValidation)
 
 	maskAny = errgo.MaskFunc(errgo.Any)
 )
 
 // IsIDNotFound returns true if the cause of the given error is IDNotFoundError.
 func IsIDNotFound(err error) bool {
-	return errgo.Cause(err) == IDNotFoundError
+	return restkit.IsStatusNotFound(err)
 }
 
 // IsDuplicateID returns true if the cause of the given error is DuplicateIDError.
 func IsDuplicateID(err error) bool {
-	return errgo.Cause(err) == DuplicateIDError
+	return restkit.IsStatusBadRequest(err) && restkit.IsErrorResponseWithCode(err, codeDuplicateID)
 }
 
 // IsValidation returns true if the cause of the given error is ValidationError.
 func IsValidation(err error) bool {
-	return errgo.Cause(err) == ValidationError
+	return restkit.IsStatusBadRequest(err) && restkit.IsErrorResponseWithCode(err, codeValidation)
 }
